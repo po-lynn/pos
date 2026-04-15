@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="skb_pos_receipt.ReceiptHeader" t-inherit="point_of_sale.ReceiptHeader" t-inherit-mode="extension">
+        <!-- Remove default logo, br, and h1 -->
+        <xpath expr="//img[hasclass('pos-receipt-logo')]" position="replace" />
+        <xpath expr="//br" position="replace" />
+        <xpath expr="//h1" position="replace" />
+        <!-- Replace the entire first div with the SKB header layout -->
+        <xpath expr="//div[1]" position="replace">
+            <div class="d-flex flex-column align-items-center" style="font-size: 12px;">
+                <!-- Logo left, shop info right -->
+                <div style="width: 100%; display: flex; align-items: center; gap: 8px;">
+                    <div style="flex: 0 0 auto;">
+                        <img src="/skb_pos_receipt/static/src/img/logo.png"
+                             alt="Logo"
+                             style="width: 70px; height: 70px; object-fit: contain;" />
+                    </div>
+                    <div style="flex: 1; text-align: left;">
+                        <!-- Shop name (company name) -->
+                        <div style="font-size: 14px; font-weight: bold;">
+                            <t t-esc="props.data.company.name" />
+                        </div>
+                        <!-- Address / phone from receipt_header text field -->
+                        <t t-if="props.data.header">
+                            <div style="white-space: pre-line; font-size: 10px; margin-top: 2px;">
+                                <t t-esc="props.data.header" />
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                <!-- Cashier + Slip No on the same line -->
+                <div style="width: 100%; display: flex; justify-content: space-between;">
+                    <span>Cashier : <t t-esc="props.data.skb_cashier_name or props.data.cashier" /></span>
+                    <span>Order Number : <t t-esc="props.data.slip_no or ''" /></span>
+                </div>
+                <!-- Date/Time -->
+                <div style="width: 100%;">
+                    D/T : <t t-esc="props.data.skb_date or ''" />
+                </div>
+                <!-- Customer (only shown when a partner is linked to the order) -->
+                <t t-if="props.data.skb_customer">
+                    <div style="width: 100%;">
+                        Customer : <t t-esc="props.data.skb_customer" />
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </t>
+</templates>
