@@ -1,0 +1,21 @@
+.qty-left-label {
+    position: absolute;
+    top: 5px !important;
+    left: 5px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    
+    /* Colors */
+    background-color: lab(88.4% -40.32 30.47); /* Green background */
+    color: #000000;            /* Black font */
+    
+    /* Layout adjustments */
+    width: auto;               /* Changed from 16px to fit the price */
+    height: auto;              /* Changed from 15px */
+    display: inline-block;
+    padding: 2px 6px;
+    line-height: 1.2;
+    z-index: 10;               /* Ensures it stays above the product name */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
