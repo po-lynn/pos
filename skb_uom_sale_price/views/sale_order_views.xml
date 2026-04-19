@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_uom_sale_price" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.uom.sale.price</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Form sub-view: inject allowed_uom_ids -->
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_uom_readonly']" position="after">
+                <field name="allowed_uom_ids" invisible="1"/>
+            </xpath>
+
+            <!-- Form sub-view: domain on product_uom (groups=!uom.group_uom) -->
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_uom'][@invisible='1']" position="attributes">
+                <attribute name="domain">[('id', 'in', allowed_uom_ids)]</attribute>
+            </xpath>
+
+            <!-- Form sub-view: domain on product_uom (groups=uom.group_uom) -->
+            <xpath expr="//field[@name='order_line']/form//field[@name='product_uom'][@class='oe_no_button']" position="attributes">
+                <attribute name="domain">[('id', 'in', allowed_uom_ids)]</attribute>
+            </xpath>
+
+            <!-- List view: inject allowed_uom_ids -->
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom_readonly']" position="after">
+                <field name="allowed_uom_ids" column_invisible="True"/>
+            </xpath>
+
+            <!-- List view: domain on product_uom (groups=!uom.group_uom, hidden) -->
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom'][@column_invisible='True']" position="attributes">
+                <attribute name="domain">[('id', 'in', allowed_uom_ids)]</attribute>
+            </xpath>
+
+            <!-- List view: domain on product_uom (groups=uom.group_uom, visible) -->
+            <xpath expr="//field[@name='order_line']/list//field[@name='product_uom'][@optional='show']" position="attributes">
+                <attribute name="domain">[('id', 'in', allowed_uom_ids)]</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
