@@ -8,7 +8,9 @@ import { Orderline } from "@point_of_sale/app/generic_components/orderline/order
 patch(PosOrderline.prototype, {
     getDisplayData() {
         const result = super.getDisplayData(...arguments);
-        result.skb_is_discount = this.get_price_with_tax() < 0;
+        // Discount lines have negative price with positive qty.
+        // Refund lines have negative qty — those must NOT be hidden.
+        result.skb_is_discount = this.get_price_with_tax() < 0 && this.qty > 0;
         // Remove unnecessary decimal places from qty (e.g. "1.00" → "1", "1.50" → "1.5")
         result.skb_qty = String(parseFloat(result.qty));
         return result;
@@ -31,15 +33,15 @@ patch(PosOrder.prototype, {
     export_for_printing(_baseUrl, _headerData) {
         const result = super.export_for_printing(...arguments);
 
-        // Split order lines into positive (products) and negative (discount products)
+        // Discount lines: negative price, positive qty. Refund lines: negative qty.
         let skb_net_total = 0;
         let skb_discount_amount = 0;
         for (const line of this.get_orderlines()) {
             const lineTotal = line.get_price_with_tax();
-            if (lineTotal >= 0) {
-                skb_net_total += lineTotal;
-            } else {
+            if (lineTotal < 0 && line.qty > 0) {
                 skb_discount_amount += Math.abs(lineTotal);
+            } else {
+                skb_net_total += lineTotal;
             }
         }
 
