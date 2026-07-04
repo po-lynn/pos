@@ -2,6 +2,14 @@
 <odoo>
     <template id="report_invoice_document_inherit_skb" inherit_id="account.report_invoice_document">
 
+        <!-- Bigger body font for A5 print -->
+        <xpath expr="//t[@t-set='forced_vat']" position="after">
+            <style>
+                .page { font-size: 16px; line-height: 1.35; }
+                .page table.o_main_table th, .page table.o_main_table td { font-size: 16px; }
+            </style>
+        </xpath>
+
         <!-- Initialize line counter before the foreach loop -->
         <xpath expr="//t[@t-foreach='lines'][@t-as='line']" position="before">
             <t t-set="line_no" t-value="0"/>

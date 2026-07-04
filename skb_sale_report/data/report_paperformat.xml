@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Quotation / Order and Pro-Forma both print on the SKB A5 format -->
+    <record id="sale.action_report_saleorder" model="ir.actions.report">
+        <field name="paperformat_id" ref="skb_account_report.paperformat_a5_invoice"/>
+    </record>
+    <record id="sale.action_report_pro_forma_invoice" model="ir.actions.report">
+        <field name="paperformat_id" ref="skb_account_report.paperformat_a5_invoice"/>
+    </record>
+</odoo>

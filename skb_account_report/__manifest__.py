@@ -5,6 +5,7 @@
     'summary': "Invoice PDF: add No. column, split Qty and UoM into separate columns",
     'depends': ['account'],
     'data': [
+        'data/report_paperformat.xml',
         'views/report_invoice.xml',
     ],
     'installable': True,
